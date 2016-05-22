@@ -81,13 +81,11 @@ if ($url === null
 ) {
     $dirName = dirname($_SERVER['SCRIPT_NAME']);
     $prefix = trim(sprintf('%s/%s', $dirName, URL_PREFIX_ENCODED), '/');
-    $pattern = '#^' . preg_quote($prefix, '#')
+    $pattern = '#^/' . preg_quote($prefix, '#')
         . '/(?<encoded>.+)/'
         . preg_quote(URL_FILENAME_SRT, '#') . '$#';
     if (preg_match($pattern, $_SERVER['REQUEST_URI'], $matches)) {
         $url = base64_decode($matches['encoded']);
-    } else {
-        var_dump($pattern, $_SERVER);exit;
     }
 }
 
@@ -103,8 +101,8 @@ if (!empty($url)) {
 <head>
     <meta charset=utf-8>
     <title>pubvn-decode-srt</title>
-    <meta name="SCRIPT_NAME" content="<?php echo htmlentities($_SERVER['SCRIPT_NAME']); ?>" />
-    <meta name="REQUEST_URI" content="<?php echo htmlentities($_SERVER['REQUEST_URI']); ?>" />
+    <meta name="SCRIPT_NAME" content="<?php echo htmlentities($_SERVER['SCRIPT_NAME']); ?>"/>
+    <meta name="REQUEST_URI" content="<?php echo htmlentities($_SERVER['REQUEST_URI']); ?>"/>
 </head>
 <body>
 <form action="index.php" method="POST">
