@@ -80,7 +80,7 @@ if ($url === null
     && !empty($_SERVER['REQUEST_URI'])
 ) {
     $dirName = dirname($_SERVER['SCRIPT_NAME']);
-    $prefix = sprintf('%s/%s', $dirName, URL_PREFIX_ENCODED);
+    $prefix = trim(sprintf('%s/%s', $dirName, URL_PREFIX_ENCODED), '/');
     $pattern = '#^' . preg_quote($prefix, '#')
         . '/(?<encoded>.+)/'
         . preg_quote(URL_FILENAME_SRT, '#') . '$#';
