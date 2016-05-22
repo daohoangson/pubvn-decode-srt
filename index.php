@@ -86,6 +86,8 @@ if ($url === null
         . preg_quote(URL_FILENAME_SRT, '#') . '$#';
     if (preg_match($pattern, $_SERVER['REQUEST_URI'], $matches)) {
         $url = base64_decode($matches['encoded']);
+    } else {
+        var_dump($pattern, $_SERVER);exit;
     }
 }
 
