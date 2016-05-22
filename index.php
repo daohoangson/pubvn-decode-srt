@@ -1,5 +1,8 @@
 <?php
 
+define('URL_PREFIX_ENCODED', 'encoded');
+define('URL_FILENAME_SRT', 'sub.srt');
+
 function parse($source)
 {
     $resultArray = array();
@@ -47,7 +50,20 @@ function unicodeOrd($ch)
 
 function output($parsed)
 {
+    header('Content-type: text/html; charset=utf-8');
+    header('Expires: Wed, 01 Jan 2100 00:00:00 GMT');
+    header('Last-Modified: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
+    header('Cache-Control: public');
+    header('Content-Length: ' . strlen($parsed));
+
     return $parsed;
+}
+
+if (isset($_POST['url'])) {
+    $urlEncoded = base64_encode($_POST['url']);
+    $location = sprintf('%s/%s/%s', URL_PREFIX_ENCODED, $urlEncoded, URL_FILENAME_SRT);
+    header('Location: ' . $location);
+    exit(0);
 }
 
 $url = null;
@@ -59,10 +75,37 @@ if ($url === null && $argc === 2) {
     // cli mode
     $url = $argv[1];
 }
+if ($url === null
+    && !empty($_SERVER['SCRIPT_NAME'])
+    && !empty($_SERVER['REQUEST_URI'])
+) {
+    $dirName = dirname($_SERVER['SCRIPT_NAME']);
+    $prefix = sprintf('%s/%s', $dirName, URL_PREFIX_ENCODED);
+    $pattern = '#^' . preg_quote($prefix, '#')
+        . '/(?<encoded>.+)/'
+        . preg_quote(URL_FILENAME_SRT, '#') . '$#';
+    if (preg_match($pattern, $_SERVER['REQUEST_URI'], $matches)) {
+        $url = base64_decode($matches['encoded']);
+    }
+}
 
 if (!empty($url)) {
     $parsed = parse(file_get_contents($url));
     die(output($parsed));
-} else {
-    die('Hello World!');
 }
+
+?>
+
+<!doctype html>
+<html lang=en>
+<head>
+    <meta charset=utf-8>
+    <title>pubvn-decode-srt</title>
+</head>
+<body>
+<form action="index.php" method="POST">
+    <input name="url" placeholder="URL"/>
+    <input type="submit" value="Submit"/>
+</form>
+</body>
+</html>
