@@ -1,7 +1,7 @@
 <?php
 
 define('URL_PREFIX_ENCODED', 'encoded');
-define('URL_FILENAME_SRT', 'sub.srt');
+define('URL_FILENAME', 'sub.vtt');
 
 function parse($source)
 {
@@ -61,7 +61,7 @@ function output($parsed)
 
 if (isset($_POST['url'])) {
     $urlEncoded = base64_encode($_POST['url']);
-    $location = sprintf('%s/%s/%s', URL_PREFIX_ENCODED, $urlEncoded, URL_FILENAME_SRT);
+    $location = sprintf('%s/%s/%s', URL_PREFIX_ENCODED, $urlEncoded, URL_FILENAME);
     header('Location: ' . $location);
     exit(0);
 }
@@ -83,7 +83,7 @@ if ($url === null
     $prefix = trim(sprintf('%s/%s', $dirName, URL_PREFIX_ENCODED), '/');
     $pattern = '#^/' . preg_quote($prefix, '#')
         . '/(?<encoded>.+)/'
-        . preg_quote(URL_FILENAME_SRT, '#') . '$#';
+        . preg_quote(URL_FILENAME, '#') . '$#';
     if (preg_match($pattern, $_SERVER['REQUEST_URI'], $matches)) {
         $url = base64_decode($matches['encoded']);
     }
