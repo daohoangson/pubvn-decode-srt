@@ -101,6 +101,8 @@ if (!empty($url)) {
 <head>
     <meta charset=utf-8>
     <title>pubvn-decode-srt</title>
+    <meta name="SCRIPT_NAME" content="<?php echo htmlentities($_SERVER['SCRIPT_NAME']); ?>" />
+    <meta name="REQUEST_URI" content="<?php echo htmlentities($_SERVER['REQUEST_URI']); ?>" />
 </head>
 <body>
 <form action="index.php" method="POST">
