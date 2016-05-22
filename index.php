@@ -50,6 +50,7 @@ function unicodeOrd($ch)
 
 function output($parsed)
 {
+    header('Access-Control-Allow-Origin: *');
     header('Content-type: text/vtt; charset=utf-8');
     header('Expires: Wed, 01 Jan 2100 00:00:00 GMT');
     header('Last-Modified: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
