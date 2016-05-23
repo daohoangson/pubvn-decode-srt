@@ -57,6 +57,11 @@ function output($parsed)
     header('Cache-Control: public');
     header('Content-Length: ' . strlen($parsed));
 
+    if (substr(URL_FILENAME, -4) === '.vtt') {
+        $parsed = "WEBVTT\n\n"
+            . preg_replace('#(\d+:\d+),(\d+)#', '$1.$2', $parsed);
+    }
+
     return $parsed;
 }
 
